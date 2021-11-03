@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   get '/me', to: 'users#me'
   get '/users/search', to: 'users#search'
 
+  resources :campaigns
+
 end
