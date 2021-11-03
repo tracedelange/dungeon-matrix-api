@@ -4,7 +4,7 @@ class CampaignsController < ApplicationController
 
     def index #return all campaigns in which the user is either a member or DM
         campaigns = @user.campaigns
-        render json: campaigns, status: :ok
+        render json: campaigns, status: :ok, user: @user
     end
 
     def create
