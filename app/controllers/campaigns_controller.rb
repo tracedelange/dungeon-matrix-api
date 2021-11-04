@@ -19,7 +19,7 @@ class CampaignsController < ApplicationController
     def show
         campaign = @user.campaigns.find_by(id: params[:id])
         if campaign
-            render json: campaign
+            render json: campaign, user: @user
         else
             render json: {error: "Campaign doesnt exist or you dont have access."}, status: 404
         end

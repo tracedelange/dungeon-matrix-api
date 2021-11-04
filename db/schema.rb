@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_03_161822) do
+ActiveRecord::Schema.define(version: 2021_11_04_201231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 2021_11_03_161822) do
   create_table "campaigns", force: :cascade do |t|
     t.string "title"
     t.integer "dm_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "connected_count", default: 0
+  end
+
+  create_table "chat_messages", force: :cascade do |t|
+    t.text "content"
+    t.integer "campaign_id"
+    t.integer "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
