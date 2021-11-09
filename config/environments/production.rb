@@ -66,7 +66,7 @@ Rails.application.configure do
   config.i18n.fallbacks = true
 
   config.web_socket_server_url = "wss://dungeon-matrix-api.herokuapp.com/cable"
-  config.action_cable.allowed_request_origins = ['https://dungeon-matrix-client.herokuapp.com/']
+  config.action_cable.allowed_request_origins = ['https://dungeon-matrix-client.herokuapp.com']
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
