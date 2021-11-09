@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_04_201231) do
+ActiveRecord::Schema.define(version: 2021_11_09_165714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,12 +28,28 @@ ActiveRecord::Schema.define(version: 2021_11_04_201231) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "connected_count", default: 0
+    t.integer "selected_map_id", default: 1
   end
 
   create_table "chat_messages", force: :cascade do |t|
     t.text "content"
     t.integer "campaign_id"
     t.integer "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "map_characters", force: :cascade do |t|
+    t.integer "map_id"
+    t.integer "position_x"
+    t.integer "position_y"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+  end
+
+  create_table "maps", force: :cascade do |t|
+    t.integer "campaign_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
