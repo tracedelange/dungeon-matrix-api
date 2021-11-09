@@ -5,6 +5,8 @@ class User < ApplicationRecord
     has_many :campaign_users
     has_many :campaigns, through: :campaign_users
 
+    has_many :characters
+
 
     validates :username, presence: true
     validates :username, length: {minimum: 2, maximum: 15}
