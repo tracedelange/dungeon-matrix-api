@@ -11,4 +11,8 @@ Rails.application.routes.draw do
 
   resources :campaigns
 
+  resources :campaign_users, only: [:index, :create]
+  delete '/campaign_users', to: 'campaign_users#destroy'
+
+
 end
