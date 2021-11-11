@@ -23,6 +23,17 @@ class ChatChannel < ApplicationCable::Channel
       current_map = Map.find(campaign.selected_map_id)
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
     end
+    
+    
+    def spawnUser(opts)
+      campaign = Campaign.find(params[:id])
+      current_map = Map.find(campaign.selected_map_id)
+      
+      current_map.map_characters.create(position_x: 0, position_y:0, character_id: opts.fetch('characterID'), user_id: opts.fetch('userID') )
+      SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
+      
+
+    end
 
     def getSessionData()
       campaign = Campaign.find(params[:id])
