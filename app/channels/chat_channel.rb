@@ -40,7 +40,8 @@ class ChatChannel < ApplicationCable::Channel
       campaign = Campaign.find(params[:id])
       current_map = Map.find(campaign.selected_map_id)
       
-      MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index', position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y')))
+      
+      MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
       
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
     end
