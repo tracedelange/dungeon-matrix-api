@@ -1,5 +1,5 @@
 class AddSelectedMapToCampaign < ActiveRecord::Migration[6.1]
   def change
-    add_column :campaigns, :selected_map_id, :integer, default: 1
+    add_column :campaigns, :selected_map_id, :integer
   end
 end

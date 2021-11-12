@@ -15,6 +15,17 @@ class ChatChannel < ApplicationCable::Channel
       )
     end
 
+    def updateCharacterHealth(opts)
+
+      character = Character.find(opts.fetch('character_id'))
+      character.update(health: opts.fetch('health'))
+
+      campaign = Campaign.find(params[:id])
+      current_map = Map.find(campaign.selected_map_id)
+      SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
+
+    end
+
     def updateUserPosition(opts)
       map_character =  MapCharacter.find(opts.fetch('map_character_id'))
       map_character.update(position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))

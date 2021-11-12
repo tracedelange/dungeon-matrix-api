@@ -10,6 +10,10 @@ class CampaignsController < ApplicationController
     def create
         newCampaign = @user.campaigns.create(title: campaign_params[:title], dm_id: @user.id)
         if newCampaign.valid?
+
+            newMap = Map.create(campaign_id: newCampaign.id)
+            newCampaign.update(selected_map_id: newMap.id)
+
             render json: newCampaign, status: :created, user: @user
         else
             render json: newCampaign.errors, status: :unprocessable_entity

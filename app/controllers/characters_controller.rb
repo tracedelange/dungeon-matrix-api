@@ -9,9 +9,10 @@ class CharactersController < ApplicationController
 
     def create
 
-        newCharacter = @user.characters.create(name: params[:name])
+        newCharacter = @user.characters.create(name: params[:name], avatar_index: params[:avatar_index], maxhealth: params[:health], health: params[:health])
 
-        if newCharacter.valid? 
+        if newCharacter.valid?
+
             render json: newCharacter
         else
             render json: newCharacter.errors, status: :unprocessable_entity

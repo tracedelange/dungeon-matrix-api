@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get '/users/search', to: 'users#search'
 
   resources :campaigns
-  resources :characters, only: [:index, :create, :destroy]
+  resources :characters, only: [:index, :create, :update, :destroy]
   resources :campaign_users, only: [:index, :create]
   delete '/campaign_users', to: 'campaign_users#destroy'
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_09_203830) do
+ActiveRecord::Schema.define(version: 2021_11_12_162901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2021_11_09_203830) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "connected_count", default: 0
-    t.integer "selected_map_id", default: 1
+    t.integer "selected_map_id"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(version: 2021_11_09_203830) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "avatar_index", default: 1
+    t.integer "health", default: 1
+    t.integer "maxHealth"
   end
 
   create_table "chat_messages", force: :cascade do |t|
@@ -54,6 +57,13 @@ ActiveRecord::Schema.define(version: 2021_11_09_203830) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.integer "character_id"
+  end
+
+  create_table "map_elements", force: :cascade do |t|
+    t.integer "map_id"
+    t.integer "avatar_index"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "maps", force: :cascade do |t|
