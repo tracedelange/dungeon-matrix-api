@@ -9,7 +9,7 @@ class CharactersController < ApplicationController
 
     def create
 
-        newCharacter = @user.characters.create(name: params[:name], avatar_index: params[:avatar_index], maxhealth: params[:health], health: params[:health])
+        newCharacter = @user.characters.create(name: params[:name], avatar_index: params[:avatar_index], maxHealth: params[:health], health: params[:health])
 
         if newCharacter.valid?
 
