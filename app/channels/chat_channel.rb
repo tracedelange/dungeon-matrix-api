@@ -34,6 +34,25 @@ class ChatChannel < ApplicationCable::Channel
       current_map = Map.find(campaign.selected_map_id)
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
     end
+
+    def generateMap(opts)
+
+
+      campaign = Campaign.find(params[:id])
+      current_map = Map.find(campaign.selected_map_id)
+
+      puts params[:gridConfiguration][:width]
+      for n in 0...20 do
+        
+        MapElement.create(map_id: current_map.id, avatar_index: 4, position_x: rand(params[:gridConfiguration][:width]), position_y:rand(params[:gridConfiguration][:height]) )
+        # MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
+
+      end
+
+      SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
+
+    end
+
     
     def spawnElement(opts)
       
@@ -46,6 +65,18 @@ class ChatChannel < ApplicationCable::Channel
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
     end
     
+    def clearMap
+      campaign = Campaign.find(params[:id])
+      current_map = Map.find(campaign.selected_map_id)
+      
+      elements = MapElement.where(map_id: current_map.id )
+      elements.each {|element| element.delete }
+      
+      SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
+
+
+    end
+
     def spawnUser(opts)
       campaign = Campaign.find(params[:id])
       current_map = Map.find(campaign.selected_map_id)
