@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_12_231246) do
+ActiveRecord::Schema.define(version: 2021_11_13_190628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,10 @@ ActiveRecord::Schema.define(version: 2021_11_12_231246) do
     t.integer "campaign_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "width", default: 25
+    t.integer "height", default: 25
+    t.integer "tile_index", default: 1
+    t.integer "background_index", default: 1
   end
 
   create_table "users", force: :cascade do |t|

@@ -41,13 +41,28 @@ class ChatChannel < ApplicationCable::Channel
       campaign = Campaign.find(params[:id])
       current_map = Map.find(campaign.selected_map_id)
 
-      puts params[:gridConfiguration][:width]
-      for n in 0...20 do
+
+      puts opts.fetch('type')
+
+
+      if opts.fetch('type') == 'forest'
+
+        current_map.update(background_index: 0, tile_index: 1)
+
+        for n in 0...100 do
+          MapElement.create(map_id: current_map.id, avatar_index: 4, position_x: rand(current_map.width), position_y:rand(current_map.height) )
+          # MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
+        end
         
-        MapElement.create(map_id: current_map.id, avatar_index: 4, position_x: rand(params[:gridConfiguration][:width]), position_y:rand(params[:gridConfiguration][:height]) )
-        # MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
+      elsif opts.fetch('type') == 'desert'
+        
+        current_map.update(background_index: 1, tile_index: 0)
+        MapElement.where(map_id: current_map.id, avatar_index: 4).each {|element| element.delete}
+      
 
       end
+
+
 
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
 
