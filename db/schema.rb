@@ -74,8 +74,8 @@ ActiveRecord::Schema.define(version: 2021_11_13_190628) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "width", default: 25
     t.integer "height", default: 25
-    t.integer "tile_index", default: 1
-    t.integer "background_index", default: 1
+    t.integer "tile_index", default: 0
+    t.integer "background_index", default: 0
   end
 
   create_table "users", force: :cascade do |t|

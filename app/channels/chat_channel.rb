@@ -40,25 +40,38 @@ class ChatChannel < ApplicationCable::Channel
 
       campaign = Campaign.find(params[:id])
       current_map = Map.find(campaign.selected_map_id)
-
-
-      puts opts.fetch('type')
+      
+      
+      
+      MapElement.where(map_id: current_map.id).each {|element| element.delete}
 
 
       if opts.fetch('type') == 'forest'
 
-        current_map.update(background_index: 0, tile_index: 1)
+        current_map.update(background_index: 0, tile_index: 0)
 
-        for n in 0...100 do
+        mapArea = current_map.height * current_map.width
+        mapCoverage = mapArea * 0.2
+
+        for n in 0...mapCoverage do
           MapElement.create(map_id: current_map.id, avatar_index: 4, position_x: rand(current_map.width), position_y:rand(current_map.height) )
           # MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
         end
         
       elsif opts.fetch('type') == 'desert'
         
-        current_map.update(background_index: 1, tile_index: 0)
-        MapElement.where(map_id: current_map.id, avatar_index: 4).each {|element| element.delete}
-      
+        current_map.update(background_index: 1, tile_index: 1)
+        # MapElement.where(map_id: current_map.id, avatar_index: 4).each {|element| element.delete}
+          
+        mapArea = current_map.height * current_map.width
+        mapCoverage = mapArea * 0.03
+
+        for n in 0...mapCoverage do
+          i = rand(3) + 6
+          MapElement.create(map_id: current_map.id, avatar_index: i, position_x: rand(current_map.width), position_y:rand(current_map.height) )
+          # MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
+        end
+        
 
       end
 
@@ -73,10 +86,7 @@ class ChatChannel < ApplicationCable::Channel
       
       campaign = Campaign.find(params[:id])
       current_map = Map.find(campaign.selected_map_id)
-      
-      
-      MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y'))
-      
+      MapElement.create(map_id: current_map.id, avatar_index: opts.fetch('avatar_index'), position_x: opts.fetch('position_x'), position_y: opts.fetch('position_y')) 
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
     end
     
@@ -105,6 +115,9 @@ class ChatChannel < ApplicationCable::Channel
     def getSessionData()
       campaign = Campaign.find(params[:id])
       current_map = Map.find(campaign.selected_map_id)
+
+      campaign.update(connected_count: campaign.connected_count + 1)
+
       SessionJoinGetDataEvent.perform_later(params[:id], {type: 'map_data', map_data: ActiveModelSerializers::SerializableResource.new(current_map, {serializer: MapSerializer})}.to_json)
     end
 
@@ -118,11 +131,16 @@ class ChatChannel < ApplicationCable::Channel
         )
     end
     def userHasLeft(opts)
-        leftUser = User.find(params[:user_id])
-        ChatMessage.create(
-          author_id: 3700,
-          campaign_id: params[:id],
-          content: leftUser.username + ' has left the chat.'
-        )
+      # campaign = Campaign.find(params[:id])
+      # campaign.update(connected_count: campaign.connected_count - 1)
+
+      
+
+        # leftUser = User.find(params[:user_id])
+        # ChatMessage.create(
+        #   author_id: 3700,
+        #   campaign_id: params[:id],
+        #   content: leftUser.username + ' has left the chat.'
+        # )
     end
   end

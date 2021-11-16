@@ -1,5 +1,5 @@
 class CampaignSerializer < ActiveModel::Serializer
-  attributes :id, :title, :created_at, :is_dm, :dm_id, :selected_map_id
+  attributes :id, :title, :created_at, :is_dm, :dm_id, :selected_map_id, :connected_count
 
   has_many :users
   has_many :chat_messages
